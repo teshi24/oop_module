@@ -75,7 +75,7 @@
         <argLine>-Xms512m -Xmx1g -Xss10m</argLine>
 
         <!-- Hier ggf. andere Startklasse anpassen! -->
-        <jar.start.class>ch.hslu.oop.DemoApp</jar.start.class>
+        <jar.start.class>ch.hslu.oop.SW05.mainmethode.DemoApp</jar.start.class>
 
         <scm.group.name>oop</scm.group.name>
         <scm.developer.uid>zbgisler</scm.developer.uid>
@@ -230,6 +230,12 @@
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
         </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>5.8.1</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
 
     <build>

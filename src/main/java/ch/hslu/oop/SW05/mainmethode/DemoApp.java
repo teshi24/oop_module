@@ -13,37 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.hslu.oop;
+package ch.hslu.oop.SW05.mainmethode;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Demo-Applikation für {@link ch.hslu.oop.Point}-Klasse.
+ * Demo-Applikation für {@link Point}-Klasse.
  */
 public final class DemoApp {
 
-    private static final Logger LOGGER = LogManager.getLogger(DemoApp.class);
+  private static final Logger LOGGER = LogManager.getLogger(DemoApp.class);
 
-    /** X-Wert. Beispiel. */
-    private static final int COR_X = 2;
+  /**
+   * X-Wert. Beispiel.
+   */
+  private static final int COR_X = 2;
 
-    /** Y-Wert. Beispiel. */
-    private static final int COR_Y = -1;
+  /**
+   * Y-Wert. Beispiel.
+   */
+  private static final int COR_Y = -1;
 
-    /**
-     * Privater Konstruktor.
-     */
-    private DemoApp() {
-    }
+  /**
+   * Privater Konstruktor.
+   */
+  private DemoApp() {
+  }
 
-    /**
-     * Main-Methode.
-     * @param args Startargumente.
-     */
-    public static void main(final String[] args) {
-        final Point point = new Point(COR_X, COR_Y);
-        final int quadrant = point.getQuadrant();
-        LOGGER.info("{} befindet sich in Quadrant: {}", point, quadrant);
-    }
+  /**
+   * Main-Methode.
+   *
+   * @param args Startargumente.
+   */
+  public static void main(final String[] args) {
+    final Point point = new Point(COR_X, COR_Y);
+    final int quadrant = point.getQuadrant();
+    LOGGER.info("{} befindet sich in Quadrant: {}", point, quadrant);
+  }
 }
