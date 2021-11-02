@@ -24,7 +24,7 @@ public class Circle extends Shape {
 
   @Override
   public int getArea() {
-    final int radius = diameter / 2;
-    return (int) (Math.sqrt(radius) * Math.PI);
+    final double radius = diameter / 2d;
+    return (int) (Math.pow(radius, 2) * Math.PI);
   }
 }
