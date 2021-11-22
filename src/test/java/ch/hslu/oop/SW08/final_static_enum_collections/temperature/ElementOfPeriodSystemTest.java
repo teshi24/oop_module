@@ -1,4 +1,4 @@
-package ch.hslu.oop.SW07.objectsEqualsCompare.temperature;
+package ch.hslu.oop.SW08.final_static_enum_collections.temperature;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class ElementOfPeriodSystemTest {
 
   @Test
   void getStateOfAggregationForTemperatureGas() {
-    Assertions.assertEquals(StateOfAggregation.GAS,
+    Assertions.assertEquals(StateOfAggregation.GASEOUS,
                             ElementOfPeriodSystem.Hg.getStateOfAggregationBasedOnTemperature(1000));
   }
 }
