@@ -8,26 +8,14 @@ public final class Temperature implements Comparable<Temperature> {
 
   private double currentTemperatureInCelsius;
 
-  /**
-   * Creates a new Temperature with default value 20
-   */
-  public Temperature() {
-    this.currentTemperatureInCelsius = 20;
-  }
-
-  /**
-   * Creates a new Temperature with the given Temperature
-   *
-   * @param currentTemperatureInCelsius
-   */
-  public Temperature(final double currentTemperatureInCelsius) {
+  private Temperature(final double currentTemperatureInCelsius) {
     this.currentTemperatureInCelsius = currentTemperatureInCelsius;
   }
 
   /**
-   * Creates a new Temperature with the given Temperature
+   * Copies the given Temperature object
    *
-   * @param currentTemperature
+   * @param currentTemperature base object to be copied
    */
   public Temperature(final Temperature currentTemperature) {
     this.currentTemperatureInCelsius = currentTemperature.getCurrentTemperatureInCelsius();
@@ -49,16 +37,22 @@ public final class Temperature implements Comparable<Temperature> {
     return (temperatureInFahrenheit - FAHRENHEIT_OFFSET) / 1.8;
   }
 
-  /**
-   * @param increaseValue
-   */
+  public static Temperature createFromCelsius(final double currentTemperatureInCelsius) {
+    return new Temperature(currentTemperatureInCelsius);
+  }
+
+  public static Temperature createFromKelvin(final double currentTemperatureInKelvin) {
+    return new Temperature(convertTemperatureInKelvinToCelsius(currentTemperatureInKelvin));
+  }
+
+  public static Temperature createFromFahrenheit(final double currentTemperatureInFahrenheit) {
+    return new Temperature(convertTemperatureInFahrenheitToCelsius(currentTemperatureInFahrenheit));
+  }
+
   public void increaseCurrentTemperatureInCelsiusOrKelvin(final double increaseValue) {
     this.currentTemperatureInCelsius += increaseValue;
   }
 
-  /**
-   * @param decreaseValue
-   */
   public void decreaseCurrentTemperatureInCelsiusOrKelvin(final double decreaseValue) {
     this.currentTemperatureInCelsius -= decreaseValue;
   }

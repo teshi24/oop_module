@@ -1,7 +1,5 @@
 package ch.hslu.oop.SW09.exceptionHandling.temperature;
 
-import ch.hslu.oop.SW08.final_static_enum_collections.temperature.ElementOfPeriodSystem;
-import ch.hslu.oop.SW08.final_static_enum_collections.temperature.StateOfAggregation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

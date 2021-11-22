@@ -1,7 +1,5 @@
 package ch.hslu.oop.SW09.exceptionHandling.temperature;
 
-import ch.hslu.oop.SW08.final_static_enum_collections.temperature.Temperature;
-import ch.hslu.oop.SW08.final_static_enum_collections.temperature.TemperatureCourse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 class TemperatureCourseTest {
 
   private TemperatureCourse course;
-  private static final Temperature DEFAULT_TEMPERATURE = new Temperature();
+  private static final Temperature DEFAULT_TEMPERATURE = Temperature.createFromCelsius(20);
 
   @BeforeEach
   void setUp() {
@@ -84,13 +82,13 @@ class TemperatureCourseTest {
   @Test
   void getMax_multipleItemsFirstBigger_returnsMaxTemperature() {
     course.add(DEFAULT_TEMPERATURE);
-    course.add(new Temperature(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() - 1));
+    course.add(Temperature.createFromCelsius(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() - 1));
     assertThat(course.getMax()).isEqualTo(DEFAULT_TEMPERATURE);
   }
 
   @Test
   void getMax_multipleItemsOtherThanFirst_returnsMaxTemperature() {
-    course.add(new Temperature(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() - 1));
+    course.add(Temperature.createFromCelsius(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() - 1));
     course.add(DEFAULT_TEMPERATURE);
     assertThat(course.getMax()).isEqualTo(DEFAULT_TEMPERATURE);
   }
@@ -111,13 +109,13 @@ class TemperatureCourseTest {
   @Test
   void getMin_multipleItemsFirstBigger_returnsMinTemperature() {
     course.add(DEFAULT_TEMPERATURE);
-    course.add(new Temperature(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() + 1));
+    course.add(Temperature.createFromCelsius(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() + 1));
     assertThat(course.getMin()).isEqualTo(DEFAULT_TEMPERATURE);
   }
 
   @Test
   void getMin_multipleItemsOtherThanFirst_returnsMinTemperature() {
-    course.add(new Temperature(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() + 1));
+    course.add(Temperature.createFromCelsius(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() + 1));
     course.add(DEFAULT_TEMPERATURE);
     assertThat(course.getMin()).isEqualTo(DEFAULT_TEMPERATURE);
   }
@@ -136,7 +134,7 @@ class TemperatureCourseTest {
   @Test
   void getAverage_multipleItems_returnsAverage() {
     course.add(DEFAULT_TEMPERATURE);
-    course.add(new Temperature(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() + 2));
-    assertThat(course.getAverage()).isEqualTo(new Temperature(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() + 1));
+    course.add(Temperature.createFromCelsius(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() + 2));
+    assertThat(course.getAverage()).isEqualTo(Temperature.createFromCelsius(DEFAULT_TEMPERATURE.getCurrentTemperatureInCelsius() + 1));
   }
 }

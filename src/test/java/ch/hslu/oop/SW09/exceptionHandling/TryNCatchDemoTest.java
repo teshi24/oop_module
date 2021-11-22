@@ -11,12 +11,12 @@ class TryNCatchDemoTest {
 
   @Test
   void handleInput_integerAsString_returnsTemperature() {
-    assertThat(TryNCatchDemo.parseInputToTemperature("1")).isEqualTo(new Temperature(1));
+    assertThat(TryNCatchDemo.parseInputToTemperature("1")).isEqualTo(Temperature.createFromCelsius(1));
   }
 
   @Test
   void handleInput_doubleAsString_returnsTemperature() {
-    assertThat(TryNCatchDemo.parseInputToTemperature("1.1")).isEqualTo(new Temperature(1.1));
+    assertThat(TryNCatchDemo.parseInputToTemperature("1.1")).isEqualTo(Temperature.createFromCelsius(1.1));
   }
 
   @Test

@@ -29,7 +29,7 @@ public final class DemoApp {
   }
 
   public static void main(final String[] args) {
-    final Temperature temperature = new Temperature();
+    final Temperature temperature = Temperature.createFromCelsius(20);
     final ElementOfPeriodSystem lead = ElementOfPeriodSystem.Pb;
     final StateOfAggregation currentStateOfAggregationForElement =
       temperature.getCurrentStateOfAggregationForElement(lead);

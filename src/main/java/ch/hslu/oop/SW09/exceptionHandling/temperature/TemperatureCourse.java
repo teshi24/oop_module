@@ -68,6 +68,6 @@ public final class TemperatureCourse {
     }
     final double averageTemperatureInCelsius = temperatureSum / getCount();
 
-    return new Temperature(averageTemperatureInCelsius);
+    return Temperature.createFromCelsius(averageTemperatureInCelsius);
   }
 }

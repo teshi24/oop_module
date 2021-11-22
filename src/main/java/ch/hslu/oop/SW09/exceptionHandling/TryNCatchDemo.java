@@ -36,7 +36,7 @@ public class TryNCatchDemo {
   @VisibleForTesting
   static Temperature parseInputToTemperature(final String input) {
     try {
-      return new Temperature(Double.parseDouble(input));
+      return Temperature.createFromCelsius(Double.parseDouble(input));
     } catch (final NullPointerException | NumberFormatException numberFormatException) {
       if (!programShouldExit(input)) {
         System.out.println("Es wurde kein gültiger Input eingegeben.");
