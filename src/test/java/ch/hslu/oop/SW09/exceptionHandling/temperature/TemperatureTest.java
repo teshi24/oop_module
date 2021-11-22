@@ -4,11 +4,14 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
-import static ch.hslu.oop.SW09.exceptionHandling.temperature.Temperature.FAHRENHEIT_OFFSET;
 import static ch.hslu.oop.SW09.exceptionHandling.temperature.Temperature.KELVIN_OFFSET;
+import static ch.hslu.oop.SW09.exceptionHandling.temperature.Temperature.createFromCelsius;
+import static ch.hslu.oop.SW09.exceptionHandling.temperature.Temperature.getMessageTemperatureToLow;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TemperatureTest {
 
@@ -22,65 +25,60 @@ class TemperatureTest {
   }
 
   @Test
-  void createFromCelsius_createsNewTemperature() {
+  void createFromCelsius_validTemperature_createsNewTemperature() {
     temperature = Temperature.createFromCelsius(0);
     assertCurrentTemperature(0);
   }
 
   @Test
-  void createFromKelvin_createsNewTemperature() {
+  void createFromCelsius_temperatureToLow_throwsIllegalArgumentException() {
+    final double invalidInput = TemperatureUnit.CELSIUS.getMinValue() - 1;
+    final Executable executable = () -> Temperature.createFromCelsius(invalidInput);
+    final String message = getMessageTemperatureToLow(invalidInput, TemperatureUnit.CELSIUS);
+
+    assertExceptionThrown(executable, message);
+  }
+
+  @Test
+  void createFromKelvin_validTemperature_createsNewTemperature() {
     temperature = Temperature.createFromKelvin(KELVIN_OFFSET);
     assertCurrentTemperature(0);
   }
 
   @Test
-  void createFromFahrenheit_createsNewTemperature() {
-    temperature = Temperature.createFromFahrenheit(FAHRENHEIT_OFFSET);
+  void createFromKelvin_temperatureToLow_throwsIllegalArgumentException() {
+    final double invalidInput = TemperatureUnit.KELVIN.getMinValue() - 1;
+    final Executable executable = () -> Temperature.createFromKelvin(invalidInput);
+    final String messageTemperatureToLow = getMessageTemperatureToLow(invalidInput, TemperatureUnit.KELVIN);
+
+    assertExceptionThrown(executable, messageTemperatureToLow);
+  }
+
+  @Test
+  void createFromFahrenheit_validTemperature_createsNewTemperature() {
+    temperature = Temperature.createFromFahrenheit(32);
     assertCurrentTemperature(0);
   }
 
-  private void assertCurrentTemperature(final double expectedCelsiusValue) {
-    assertEquals(expectedCelsiusValue, temperature.getCurrentTemperatureInCelsius());
-    assertEquals(expectedCelsiusValue + KELVIN_OFFSET, temperature.getCurrentTemperatureInKelvin());
-    assertEquals(expectedCelsiusValue * 1.8 + FAHRENHEIT_OFFSET, temperature.getCurrentTemperatureInFahrenheit());
-  }
-
   @Test
-  void increaseCurrentTemperatureInCelsiusOrKelvin() {
-    final double increment = 2;
-    temperature.increaseCurrentTemperatureInCelsiusOrKelvin(increment);
-    assertCurrentTemperature(DEFAULT_VALUE + increment);
-  }
+  void createFromFahrenheit_temperatureToLow_throwsIllegalArgumentException() {
+    final double invalidInput = TemperatureUnit.FAHRENHEIT.getMinValue() - 1;
+    final Executable executable = () -> Temperature.createFromFahrenheit(invalidInput);
+    final String messageTemperatureToLow = getMessageTemperatureToLow(invalidInput, TemperatureUnit.FAHRENHEIT);
 
-  @Test
-  void increaseCurrentTemperatureInCelsiusOrKelvinNegativeValue() {
-    final double increment = -2;
-    temperature.increaseCurrentTemperatureInCelsiusOrKelvin(increment);
-    assertCurrentTemperature(DEFAULT_VALUE + increment);
-  }
-
-  @Test
-  void decreaseCurrentTemperatureInCelsiusOrKelvin() {
-    final double decrement = 2;
-    temperature.decreaseCurrentTemperatureInCelsiusOrKelvin(decrement);
-    assertCurrentTemperature(DEFAULT_VALUE - decrement);
-  }
-
-  @Test
-  void decreaseCurrentTemperatureInCelsiusOrKelvinNegativeValue() {
-    final double decrement = -2;
-    temperature.decreaseCurrentTemperatureInCelsiusOrKelvin(decrement);
-    assertCurrentTemperature(DEFAULT_VALUE - decrement);
+    assertExceptionThrown(executable, messageTemperatureToLow);
   }
 
   @Test
   void getCurrentStateOfAggregationForElementDependingOnCurrentTemperature() {
     assertEquals(StateOfAggregation.LIQUID,
                  temperature.getCurrentStateOfAggregationForElement(ElementOfPeriodSystem.Hg));
-    temperature.setCurrentTemperatureInCelsius(1000);
+
+    temperature = createFromCelsius(1000);
     assertEquals(StateOfAggregation.GASEOUS,
                  temperature.getCurrentStateOfAggregationForElement(ElementOfPeriodSystem.Hg));
-    temperature.setCurrentTemperatureInCelsius(-1000);
+
+    temperature = createFromCelsius(-200);
     assertEquals(StateOfAggregation.SOLID,
                  temperature.getCurrentStateOfAggregationForElement(ElementOfPeriodSystem.Hg));
   }
@@ -116,36 +114,47 @@ class TemperatureTest {
 
   @Test
   void convertCelsiusToKelvin_0_returnsKelvinOffset() {
-    assertThat(Temperature.convertTemperatureInCelsiusToKelvin(0.0)).isEqualTo(KELVIN_OFFSET);
+    assertThat(Temperature.convertCelsiusToKelvin(0.0)).isEqualTo(KELVIN_OFFSET);
   }
 
   @Test
   void convertKelvinToCelsius_KelvinOffset_returns0() {
-    assertThat(Temperature.convertTemperatureInKelvinToCelsius(KELVIN_OFFSET)).isEqualTo(0.0);
+    assertThat(Temperature.convertKelvinToCelsius(KELVIN_OFFSET)).isEqualTo(0.0);
   }
 
   @Test
   void convertCelsiusToFahrenheit_0_returnsFahrenheitOffset() {
-    assertThat(Temperature.convertTemperatureInCelsiusToFahrenheit(0.0)).isEqualTo(FAHRENHEIT_OFFSET);
+    assertThat(Temperature.convertCelsiusToFahrenheit(0.0)).isEqualTo(32);
   }
 
   @Test
   void convertCelsiusToFahrenheit_1_returnsCorrectFahrenheitValue() {
-    assertThat(Temperature.convertTemperatureInCelsiusToFahrenheit(1)).isEqualTo(33.8);
+    assertThat(Temperature.convertCelsiusToFahrenheit(1)).isEqualTo(33.8);
   }
 
   @Test
   void convertFahrenheitToCelsius_FahrenheitOffset_returns0() {
-    assertThat(Temperature.convertTemperatureInFahrenheitToCelsius(FAHRENHEIT_OFFSET)).isEqualTo(0);
+    assertThat(Temperature.convertFahrenheitToCelsius(32)).isEqualTo(0);
   }
 
   @Test
   void convertFahrenheitToCelsius_1_returnsCorrectFahrenheitValue() {
-    assertEquals(-17.22, Temperature.convertTemperatureInFahrenheitToCelsius(1), 0.01);
+    assertEquals(-17.22, Temperature.convertFahrenheitToCelsius(1), 0.01);
   }
 
   @Test
   void convertFahrenheitToCelsius_decimalValue_returnsCorrectFahrenheitValue() {
-    assertEquals(-17.16, Temperature.convertTemperatureInFahrenheitToCelsius(1.11), 0.01);
+    assertEquals(-17.16, Temperature.convertFahrenheitToCelsius(1.11), 0.01);
+  }
+
+  private void assertCurrentTemperature(final double expectedCelsiusValue) {
+    assertEquals(expectedCelsiusValue, temperature.getCurrentTemperatureInCelsius());
+    assertEquals(expectedCelsiusValue + KELVIN_OFFSET, temperature.getCurrentTemperatureInKelvin());
+    assertEquals(expectedCelsiusValue * 1.8 + 32, temperature.getCurrentTemperatureInFahrenheit());
+  }
+
+  private void assertExceptionThrown(final Executable executable, final String message) {
+    final Exception thrownException = assertThrows(IllegalArgumentException.class, executable);
+    assertThat(thrownException.getMessage()).isEqualTo(message);
   }
 }

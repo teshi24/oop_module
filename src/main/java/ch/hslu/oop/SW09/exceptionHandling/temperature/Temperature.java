@@ -1,12 +1,68 @@
 package ch.hslu.oop.SW09.exceptionHandling.temperature;
 
+import org.assertj.core.util.VisibleForTesting;
+
 import java.util.Objects;
 
+/**
+ * Holds a temperature.
+ */
 public final class Temperature implements Comparable<Temperature> {
-  public static final double KELVIN_OFFSET = 273.15;
-  public static final int FAHRENHEIT_OFFSET = 32;
+  public static final double KELVIN_OFFSET = -TemperatureUnit.CELSIUS.getMinValue();
 
-  private double currentTemperatureInCelsius;
+  private final double currentTemperatureInCelsius;
+
+  /**
+   * Creates a new Temperature object.
+   *
+   * @param currentTemperatureInCelsius initializes temperature in the new object
+   * @return new Temperature object
+   * @throws IllegalArgumentException Exception thrown if the given temperature is lower than the minimal °C value
+   *                                  {@link TemperatureUnit#CELSIUS}
+   */
+  public static Temperature createFromCelsius(final double currentTemperatureInCelsius) throws IllegalArgumentException {
+    validateGivenTemperature(currentTemperatureInCelsius, TemperatureUnit.CELSIUS);
+    return new Temperature(currentTemperatureInCelsius);
+  }
+
+  /**
+   * Creates a new Temperature object.
+   *
+   * @param currentTemperatureInKelvin initializes temperature in the new object
+   * @return new Temperature object
+   * @throws IllegalArgumentException Exception thrown if the given temperature is lower than the minimal K value
+   *                                  {@link TemperatureUnit#KELVIN}
+   */
+  public static Temperature createFromKelvin(final double currentTemperatureInKelvin) throws IllegalArgumentException {
+    validateGivenTemperature(currentTemperatureInKelvin, TemperatureUnit.KELVIN);
+    return new Temperature(convertKelvinToCelsius(currentTemperatureInKelvin));
+  }
+
+  /**
+   * Creates a new Temperature object.
+   *
+   * @param currentTemperatureInFahrenheit initializes temperature in the new object
+   * @return new Temperature object
+   * @throws IllegalArgumentException Exception thrown if the given temperature is lower than the minimal °K value
+   *                                  {@link TemperatureUnit#FAHRENHEIT}
+   */
+  public static Temperature createFromFahrenheit(final double currentTemperatureInFahrenheit) throws IllegalArgumentException {
+    validateGivenTemperature(currentTemperatureInFahrenheit, TemperatureUnit.FAHRENHEIT);
+    return new Temperature(convertFahrenheitToCelsius(currentTemperatureInFahrenheit));
+  }
+
+  private static void validateGivenTemperature(final double givenTemperature, final TemperatureUnit givenUnit) throws IllegalArgumentException {
+    if (givenTemperature < givenUnit.getMinValue()) {
+      throw new IllegalArgumentException(getMessageTemperatureToLow(givenTemperature, givenUnit));
+    }
+  }
+
+  @VisibleForTesting
+  static String getMessageTemperatureToLow(final double givenTemperature, final TemperatureUnit givenUnit) {
+    final String MESSAGE_TEMPLATE_TEMPERATURE_TO_LOW = "%1$.2f %3$s is an invalid Temperature. " + //
+                                                       "Smallest valid value: %2$.2f %3$s.";
+    return String.format(MESSAGE_TEMPLATE_TEMPERATURE_TO_LOW, givenTemperature, givenUnit.getMinValue(), givenUnit);
+  }
 
   private Temperature(final double currentTemperatureInCelsius) {
     this.currentTemperatureInCelsius = currentTemperatureInCelsius;
@@ -21,40 +77,20 @@ public final class Temperature implements Comparable<Temperature> {
     this.currentTemperatureInCelsius = currentTemperature.getCurrentTemperatureInCelsius();
   }
 
-  public static double convertTemperatureInCelsiusToKelvin(final double temperatureInCelsius) {
+  public static double convertCelsiusToKelvin(final double temperatureInCelsius) {
     return temperatureInCelsius + KELVIN_OFFSET;
   }
 
-  public static double convertTemperatureInKelvinToCelsius(final double temperatureInKelvin) {
+  public static double convertKelvinToCelsius(final double temperatureInKelvin) {
     return temperatureInKelvin - KELVIN_OFFSET;
   }
 
-  public static double convertTemperatureInCelsiusToFahrenheit(final double temperatureInCelsius) {
-    return temperatureInCelsius * 1.8 + FAHRENHEIT_OFFSET;
+  public static double convertCelsiusToFahrenheit(final double temperatureInCelsius) {
+    return temperatureInCelsius * 1.8 + 32;
   }
 
-  public static double convertTemperatureInFahrenheitToCelsius(final double temperatureInFahrenheit) {
-    return (temperatureInFahrenheit - FAHRENHEIT_OFFSET) / 1.8;
-  }
-
-  public static Temperature createFromCelsius(final double currentTemperatureInCelsius) {
-    return new Temperature(currentTemperatureInCelsius);
-  }
-
-  public static Temperature createFromKelvin(final double currentTemperatureInKelvin) {
-    return new Temperature(convertTemperatureInKelvinToCelsius(currentTemperatureInKelvin));
-  }
-
-  public static Temperature createFromFahrenheit(final double currentTemperatureInFahrenheit) {
-    return new Temperature(convertTemperatureInFahrenheitToCelsius(currentTemperatureInFahrenheit));
-  }
-
-  public void increaseCurrentTemperatureInCelsiusOrKelvin(final double increaseValue) {
-    this.currentTemperatureInCelsius += increaseValue;
-  }
-
-  public void decreaseCurrentTemperatureInCelsiusOrKelvin(final double decreaseValue) {
-    this.currentTemperatureInCelsius -= decreaseValue;
+  public static double convertFahrenheitToCelsius(final double temperatureInFahrenheit) {
+    return (temperatureInFahrenheit - 32) / 1.8;
   }
 
   public double getCurrentTemperatureInCelsius() {
@@ -62,23 +98,11 @@ public final class Temperature implements Comparable<Temperature> {
   }
 
   public double getCurrentTemperatureInKelvin() {
-    return convertTemperatureInCelsiusToKelvin(currentTemperatureInCelsius);
+    return convertCelsiusToKelvin(currentTemperatureInCelsius);
   }
 
   public double getCurrentTemperatureInFahrenheit() {
-    return convertTemperatureInCelsiusToFahrenheit(currentTemperatureInCelsius);
-  }
-
-  public void setCurrentTemperatureInCelsius(final double currentTemperatureInCelsius) {
-    this.currentTemperatureInCelsius = currentTemperatureInCelsius;
-  }
-
-  public void setCurrentTemperatureInKelvin(final double currentTemperatureInKelvin) {
-    this.currentTemperatureInCelsius = convertTemperatureInKelvinToCelsius(currentTemperatureInKelvin);
-  }
-
-  public void setCurrentTemperatureInFahrenheit(final double currentTemperatureInFahrenheit) {
-    this.currentTemperatureInCelsius = convertTemperatureInFahrenheitToCelsius(currentTemperatureInFahrenheit);
+    return convertCelsiusToFahrenheit(currentTemperatureInCelsius);
   }
 
   /**
