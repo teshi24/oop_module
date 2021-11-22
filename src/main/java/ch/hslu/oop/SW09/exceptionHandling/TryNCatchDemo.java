@@ -1,11 +1,16 @@
 package ch.hslu.oop.SW09.exceptionHandling;
 
 import ch.hslu.oop.SW09.exceptionHandling.temperature.Temperature;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.assertj.core.util.VisibleForTesting;
 
 import java.util.Scanner;
 
 public class TryNCatchDemo {
+
+  private static final Logger LOG = LogManager.getLogger(TryNCatchDemo.class);
+
   /**
    * my expectations how the code works:
    * - console ask for a temperature as an input
@@ -37,9 +42,11 @@ public class TryNCatchDemo {
   static Temperature parseInputToTemperature(final String input) {
     try {
       return Temperature.createFromCelsius(Double.parseDouble(input));
-    } catch (final NullPointerException | NumberFormatException numberFormatException) {
+    } catch (final NullPointerException | NumberFormatException exception) {
       if (!programShouldExit(input)) {
-        System.out.println("Es wurde kein gültiger Input eingegeben.");
+        LOG.error("'{}' ist kein gültiger Input. Bitte versuchen Sie es erneut.\n" + //
+                  "Exception: {}", //
+                  input, exception);
       }
       return null;
     }
