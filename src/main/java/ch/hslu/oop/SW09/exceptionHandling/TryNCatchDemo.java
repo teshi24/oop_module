@@ -33,7 +33,9 @@ public class TryNCatchDemo {
     do {
       System.out.println("Bitte Temperatur eingeben ('exit' zum Beenden): ");
       input = scanner.next();
-      final Temperature chosenTemperature = parseInputToTemperature(input);
+      if (!programShouldExit(input)) {
+        final Temperature chosenTemperature = parseInputToTemperature(input);
+      }
     } while (!programShouldExit(input));
     System.out.println("Programm beendet.");
   }
@@ -43,11 +45,9 @@ public class TryNCatchDemo {
     try {
       return Temperature.createFromCelsius(Double.parseDouble(input));
     } catch (final NullPointerException | NumberFormatException exception) {
-      if (!programShouldExit(input)) {
-        LOG.error("'{}' ist kein gültiger Input. Bitte versuchen Sie es erneut.\n" + //
-                  "Exception: {}", //
-                  input, exception);
-      }
+      LOG.error("'{}' ist kein gültiger Input. Bitte versuchen Sie es erneut.\n" + //
+                "Exception: {}", //
+                input, exception);
       return null;
     }
   }

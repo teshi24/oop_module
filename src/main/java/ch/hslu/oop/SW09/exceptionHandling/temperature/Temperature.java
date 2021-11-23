@@ -43,7 +43,7 @@ public final class Temperature implements Comparable<Temperature> {
    *
    * @param currentTemperatureInFahrenheit initializes temperature in the new object
    * @return new Temperature object
-   * @throws IllegalArgumentException Exception thrown if the given temperature is lower than the minimal °K value
+   * @throws IllegalArgumentException Exception thrown if the given temperature is lower than the minimal °F value
    *                                  {@link TemperatureUnit#FAHRENHEIT}
    */
   public static Temperature createFromFahrenheit(final double currentTemperatureInFahrenheit) throws IllegalArgumentException {
