@@ -31,21 +31,25 @@ public class Car implements Switchable {
 
   @Override
   public void switchOn() {
-    engine.switchOn();
+    if (isSwitchedOff()) {
+      starterSwitch.switchOn();
+      engine.switchOn();
+    }
   }
 
   @Override
   public void switchOff() {
     engine.switchOff();
+    starterSwitch.switchOff();
   }
 
   @Override
   public boolean isSwitchedOn() {
-    return engine.isSwitchedOn();
+    return starterSwitch.isSwitchedOn();
   }
 
   @Override
   public boolean isSwitchedOff() {
-    return engine.isSwitchedOff();
+    return !isSwitchedOn();
   }
 }
