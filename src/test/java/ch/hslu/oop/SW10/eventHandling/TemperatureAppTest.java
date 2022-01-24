@@ -1,53 +1,46 @@
 package ch.hslu.oop.SW10.eventHandling;
 
 import ch.hslu.oop.SW10.eventHandling.temperature.Temperature;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class TemperatureInputHandlerTest {
-  private TemperatureInputHandler inputHandler;
-
-  @BeforeEach
-  void setUp() {
-    inputHandler = new TemperatureInputHandler();
-  }
+class TemperatureAppTest {
 
   @Test
   void handleInput_integerAsString_returnsTemperature() {
-    assertThat(inputHandler.parseInputToTemperature("1")).isEqualTo(Temperature.createFromCelsius(1));
+    assertThat(TemperatureApp.parseInputToTemperature("1")).isEqualTo(Temperature.createFromCelsius(1));
   }
 
   @Test
   void handleInput_doubleAsString_returnsTemperature() {
-    assertThat(inputHandler.parseInputToTemperature("1.1")).isEqualTo(Temperature.createFromCelsius(1.1));
+    assertThat(TemperatureApp.parseInputToTemperature("1.1")).isEqualTo(Temperature.createFromCelsius(1.1));
   }
 
   @Test
   void handleInput_null_returnsNull() {
-    assertThat(inputHandler.parseInputToTemperature(null)).isNull();
+    assertThat(TemperatureApp.parseInputToTemperature(null)).isNull();
   }
 
   @Test
   void handleInput_randomString_returnsNull() {
-    assertThat(inputHandler.parseInputToTemperature("random")).isNull();
+    assertThat(TemperatureApp.parseInputToTemperature("random")).isNull();
   }
 
   @Test
   void programShouldExit_null_false() {
-    assertFalse(inputHandler.programShouldExit(null));
+    assertFalse(TemperatureApp.programShouldExit(null));
   }
 
   @Test
   void programShouldExit_randomString_false() {
-    assertFalse(inputHandler.programShouldExit("random"));
+    assertFalse(TemperatureApp.programShouldExit("random"));
   }
 
   @Test
   void programShouldExit_exit_true() {
-    assertTrue(inputHandler.programShouldExit("exit"));
+    assertTrue(TemperatureApp.programShouldExit("exit"));
   }
 }

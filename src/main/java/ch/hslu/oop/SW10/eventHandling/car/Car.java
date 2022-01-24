@@ -5,9 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-public class Car implements Switchable, PropertyChangeListener {
+public class Car implements Switchable {
   private static final Logger LOG = LogManager.getLogger(Car.class);
   private final SteeringWheel steeringWheel;
   private final Wheel frontLeftWheel;
@@ -30,7 +29,7 @@ public class Car implements Switchable, PropertyChangeListener {
     backRightWheel = new Wheel();
 
     engine = new Engine();
-    engine.addPropertyChangeListener(this);
+    engine.addPropertyChangeListener(this::handleMotorEvent);
 
     frontLight = new Light();
     backLight = new Light();
@@ -66,8 +65,7 @@ public class Car implements Switchable, PropertyChangeListener {
     return !isSwitchedOn();
   }
 
-  @Override
-  public void propertyChange(final PropertyChangeEvent event) {
+  public void handleMotorEvent(final PropertyChangeEvent event) {
     LOG.info(event);
   }
 }
