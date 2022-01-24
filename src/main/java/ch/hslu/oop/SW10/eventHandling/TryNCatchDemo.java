@@ -1,6 +1,7 @@
 package ch.hslu.oop.SW10.eventHandling;
 
 import ch.hslu.oop.SW10.eventHandling.temperature.Temperature;
+import ch.hslu.oop.SW10.eventHandling.temperature.TemperatureCourse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.assertj.core.util.VisibleForTesting;
@@ -30,14 +31,16 @@ public class TryNCatchDemo {
   public static void main(final String[] args) {
     String input;
     final Scanner scanner = new Scanner(System.in);
+    final TemperatureCourse course = new TemperatureCourse();
     do {
-      System.out.println("Bitte Temperatur eingeben ('exit' zum Beenden): ");
+      LOG.info("Bitte Temperatur eingeben ('exit' zum Beenden): ");
       input = scanner.next();
       if (!programShouldExit(input)) {
-        final Temperature chosenTemperature = parseInputToTemperature(input);
+        course.add(parseInputToTemperature(input));
       }
     } while (!programShouldExit(input));
-    System.out.println("Programm beendet.");
+    printStats(course);
+    LOG.info("Programm beendet.");
   }
 
   @VisibleForTesting
@@ -50,6 +53,20 @@ public class TryNCatchDemo {
                 input, exception);
       return null;
     }
+  }
+
+  private static void printStats(final TemperatureCourse course) {
+    if (course == null || course.getTemperatures().isEmpty()) {
+      LOG.warn("Da keine Daten eingegeben wurden, kann keine Statistik generiert werden.");
+      return;
+    }
+
+    LOG.info("Statistik");
+    LOG.info("---------");
+    LOG.info("Anzahl Temperaturwerte: {}", course.getCount());
+    LOG.info("Durchschnittstemperatur: {}", course.getAverage());
+    LOG.info("Min Temperatur: {}", course.getMin());
+    LOG.info("Max Temperatur: {}", course.getMax());
   }
 
   @VisibleForTesting
