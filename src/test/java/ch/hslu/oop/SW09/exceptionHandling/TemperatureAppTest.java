@@ -1,13 +1,13 @@
-package ch.hslu.oop.SW10.eventHandling;
+package ch.hslu.oop.SW09.exceptionHandling;
 
-import ch.hslu.oop.SW10.eventHandling.temperature.Temperature;
+import ch.hslu.oop.SW09.exceptionHandling.temperature.Temperature;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class TryNCatchDemoTest {
+class TemperatureAppTest {
 
   @Test
   void handleInput_integerAsString_returnsTemperature() {
