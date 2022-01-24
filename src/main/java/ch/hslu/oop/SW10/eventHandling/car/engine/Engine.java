@@ -12,30 +12,28 @@ import static ch.hslu.oop.SW10.exceptionhandling.Warnings.varShouldNotBeNull;
 
 public class Engine implements Switchable {
 
-  private EngineState engineState;
-  private int rpm = 0;
-
   private final List<PropertyChangeListener> listeners = new ArrayList<>();
+  private EngineState engineState = EngineState.OFF;
+  private int rpm = 0;
 
   @Override
   public void switchOn() {
     if (isSwitchedOff()) {
+      final EngineState oldEngineState = engineState;
       engineState = EngineState.ON;
       rpm = 500;
+      firePropertyChangeEvent(new PropertyChangeEvent(this, "engineState", oldEngineState, engineState));
     }
   }
 
   @Override
   public void switchOff() {
     if (isSwitchedOn()) {
+      final EngineState oldEngineState = engineState;
       engineState = EngineState.OFF;
       rpm = 0;
+      firePropertyChangeEvent(new PropertyChangeEvent(this, "engineState", oldEngineState, engineState));
     }
-  }
-
-  @Override
-  public boolean isSwitchedOn() {
-    return engineState == EngineState.ON;
   }
 
   @Override
@@ -49,9 +47,14 @@ public class Engine implements Switchable {
    * @param event PropertyChangeEvent.
    */
   private void firePropertyChangeEvent(final PropertyChangeEvent event) {
-    for (final PropertyChangeListener listener : this.listeners) {
+    for (final PropertyChangeListener listener : listeners) {
       listener.propertyChange(event);
     }
+  }
+
+  @Override
+  public boolean isSwitchedOn() {
+    return engineState == EngineState.ON;
   }
 
   /**

@@ -3,30 +3,112 @@ package ch.hslu.oop.SW10.eventHandling.car.engine;
 import ch.hslu.oop.SW10.eventHandling.car.SwitchableTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatcher;
+import org.mockito.Mockito;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import static ch.hslu.oop.SW10.exceptionhandling.Warnings.varShouldNotBeNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-class EngineTest extends SwitchableTest<Engine> {
+public class EngineTest extends SwitchableTest<Engine> {
+
+  public static ArgumentMatcher<PropertyChangeEvent> matchesPropertyChangeEvent(final PropertyChangeEvent expectedEvent) {
+    return arg -> expectedEvent.getSource().getClass() == arg.getSource().getClass() && //
+                  expectedEvent.getOldValue().equals(arg.getOldValue()) && //
+                  expectedEvent.getNewValue().equals(arg.getNewValue()) && //
+                  expectedEvent.getPropertyName().equals(arg.getPropertyName());
+  }
+
+  public static PropertyChangeEvent getEngineStateChangeEvent(final Engine engine,
+                                                              final EngineState expectedOldEngineState,
+                                                              final EngineState expectedNewEngineState) {
+    return new PropertyChangeEvent(engine, "engineState", expectedOldEngineState, expectedNewEngineState);
+  }
 
   @Override
   @BeforeEach
   public void setupTestee() {
-    this.testee = new Engine();
+    testee = new Engine();
   }
 
   @Test
-  void switchOn_propertyChangeEventTriggered() {
-    // PropertyChangeEvent
+  void switchOn_noListenerRegistered_canSwitchOn() {
+    final Engine testeeSpy = Mockito.spy(Engine.class);
+    testeeSpy.switchOn();
   }
 
   @Test
-  void switchOff_propertyChangeEventTriggered() {
+  void switchOn_singleListenerRegistered_informsAboutPropertyChangeEvent() {
+    final Engine testeeSpy = Mockito.spy(Engine.class);
+    final PropertyChangeListener listener = Mockito.spy(PropertyChangeListener.class);
+    testeeSpy.addPropertyChangeListener(listener);
 
+    testeeSpy.switchOn();
+
+    final PropertyChangeEvent expectedEngineStateChangeEvent = getEngineStateChangeEvent(testeeSpy, EngineState.OFF,
+                                                                                         EngineState.ON);
+    verify(listener, times(1)).propertyChange(argThat(matchesPropertyChangeEvent(expectedEngineStateChangeEvent)));
+  }
+
+  @Test
+  void switchOn_multipleListenerRegistered_informsAboutPropertyChangeEvent() {
+    final Engine testeeSpy = Mockito.spy(Engine.class);
+    final PropertyChangeListener listener1 = Mockito.spy(PropertyChangeListener.class);
+    final PropertyChangeListener listener2 = Mockito.spy(PropertyChangeListener.class);
+    testeeSpy.addPropertyChangeListener(listener1);
+    testeeSpy.addPropertyChangeListener(listener2);
+
+    testeeSpy.switchOn();
+
+    final PropertyChangeEvent expectedEngineStateChangeEvent = getEngineStateChangeEvent(testeeSpy, EngineState.OFF,
+                                                                                         EngineState.ON);
+    verify(listener1, times(1)).propertyChange(argThat(matchesPropertyChangeEvent(expectedEngineStateChangeEvent)));
+    verify(listener2, times(1)).propertyChange(argThat(matchesPropertyChangeEvent(expectedEngineStateChangeEvent)));
+  }
+
+  @Test
+  void switchOff_noListenerRegistered_canSwitchOff() {
+    final Engine testeeSpy = Mockito.spy(Engine.class);
+    testeeSpy.switchOn();
+    testeeSpy.switchOff();
+  }
+
+  @Test
+  void switchOff_singleListenerRegistered_informsAboutPropertyChangeEvent() {
+    final Engine testeeSpy = Mockito.spy(Engine.class);
+    testeeSpy.switchOn();
+    final PropertyChangeListener listener = Mockito.spy(PropertyChangeListener.class);
+    testeeSpy.addPropertyChangeListener(listener);
+
+    testeeSpy.switchOff();
+
+    final PropertyChangeEvent expectedEngineStateChangeEvent = getEngineStateChangeEvent(testeeSpy, EngineState.ON,
+                                                                                         EngineState.OFF);
+    verify(listener, times(1)).propertyChange(argThat(matchesPropertyChangeEvent(expectedEngineStateChangeEvent)));
+  }
+
+  @Test
+  void switchOff_multipleListenerRegistered_informsAboutPropertyChangeEvent() {
+    final Engine testeeSpy = Mockito.spy(Engine.class);
+    testeeSpy.switchOn();
+    final PropertyChangeListener listener1 = Mockito.spy(PropertyChangeListener.class);
+    final PropertyChangeListener listener2 = Mockito.spy(PropertyChangeListener.class);
+    testeeSpy.addPropertyChangeListener(listener1);
+    testeeSpy.addPropertyChangeListener(listener2);
+
+    testeeSpy.switchOff();
+
+    final PropertyChangeEvent expectedEngineStateChangeEvent = getEngineStateChangeEvent(testeeSpy, EngineState.ON,
+                                                                                         EngineState.OFF);
+    verify(listener1, times(1)).propertyChange(argThat(matchesPropertyChangeEvent(expectedEngineStateChangeEvent)));
+    verify(listener2, times(1)).propertyChange(argThat(matchesPropertyChangeEvent(expectedEngineStateChangeEvent)));
   }
 
   @Test
