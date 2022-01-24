@@ -1,6 +1,14 @@
 package ch.hslu.oop.SW10.eventHandling.car;
 
-public class Car implements Switchable {
+import ch.hslu.oop.SW10.eventHandling.car.engine.Engine;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class Car implements Switchable, PropertyChangeListener {
+  private static final Logger LOG = LogManager.getLogger(Car.class);
   private SteeringWheel steeringWheel;
   private Wheel frontLeftWheel;
   private Wheel frontRightWheel;
@@ -39,8 +47,10 @@ public class Car implements Switchable {
 
   @Override
   public void switchOff() {
-    engine.switchOff();
-    starterSwitch.switchOff();
+    if (isSwitchedOn()) {
+      engine.switchOff();
+      starterSwitch.switchOff();
+    }
   }
 
   @Override
@@ -51,5 +61,10 @@ public class Car implements Switchable {
   @Override
   public boolean isSwitchedOff() {
     return !isSwitchedOn();
+  }
+
+  @Override
+  public void propertyChange(final PropertyChangeEvent event) {
+    LOG.info(event);
   }
 }

@@ -22,8 +22,9 @@ class TemperatureCourseTest {
   }
 
   @Test
-  void addTemperature_null_doesNotAddTemperatureAndReturnsFalse() {
-    final boolean returnValue = course.add(null);
+  void addTemperature_nullTemperature_doesNotAddTemperatureAndReturnsFalse() {
+    final Temperature temperature = null;
+    final boolean returnValue = course.add(temperature);
     assertThat(course.getTemperatures()).isEmpty();
     assertThat(returnValue).isFalse();
   }

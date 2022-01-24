@@ -26,9 +26,17 @@ class LineTest {
     line.getEndPoint().setX(xEndPoint);
     line.getEndPoint().setY(yEndPoint);
 
+    assertEquals(0, line.getStartPoint().getX());
+    assertEquals(0, line.getStartPoint().getY());
+    assertEquals(0, line.getEndPoint().getX());
+    assertEquals(0, line.getEndPoint().getY());
+
+    /*
+    this must be false, since datahiding means to return copies of the element, so that other classes cannot directly change values
     assertEquals(xStartPoint, line.getStartPoint().getX());
     assertEquals(yStartPoint, line.getStartPoint().getY());
     assertEquals(xEndPoint, line.getEndPoint().getX());
     assertEquals(yEndPoint, line.getEndPoint().getY());
+     */
   }
 }

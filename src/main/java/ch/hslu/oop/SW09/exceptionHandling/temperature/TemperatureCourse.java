@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static ch.hslu.oop.SW09.exceptionHandling.temperature.Temperature.createFromCelsius;
+
 public final class TemperatureCourse {
 
   private final List<Temperature> temperatures;
@@ -68,6 +70,6 @@ public final class TemperatureCourse {
     }
     final double averageTemperatureInCelsius = temperatureSum / getCount();
 
-    return Temperature.createFromCelsius(averageTemperatureInCelsius);
+    return createFromCelsius(averageTemperatureInCelsius);
   }
 }

@@ -6,12 +6,16 @@ public class Switch implements Switchable {
 
   @Override
   public void switchOn() {
-    isOn = true;
+    if (isSwitchedOff()) {
+      isOn = true;
+    }
   }
 
   @Override
   public void switchOff() {
-    isOn = false;
+    if (isSwitchedOn()) {
+      isOn = false;
+    }
   }
 
   @Override

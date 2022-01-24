@@ -6,7 +6,7 @@ class AirConditioningTest extends SwitchableTest<AirConditioning> {
 
   @Override
   @BeforeEach
-  void setupTestee() {
+  public void setupTestee() {
     this.testee = new AirConditioning();
   }
 }
