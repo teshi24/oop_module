@@ -22,35 +22,58 @@ public class EngineControl {
     this.engineView = engineView;
 
     if (engine.isSwitchedOn()) {
-      engineView.setStateOn();
+      updateEngineViewSwitchedOn();
+    } else {
+      updateEngineViewRpmValue();
     }
 
     engine.addPropertyChangeListener(this::handleEngineEvent);
     engineView.addPropertyChangeListener(this::handleEngineViewEvent);
   }
 
-  private void handleEngineEvent(final PropertyChangeEvent event) {
-    if ("engineState".equals(event.getPropertyName())) {
-      if (EngineState.ON.equals(event.getNewValue())) {
-        engineView.setStateOn();
-        return;
-      } else if (EngineState.OFF.equals(event.getNewValue())) {
-        engineView.setStateOff();
-        return;
-      }
-    }
-    LOG.error("Unknown PropertyChangeEvent happened: {}", event);
+  private void updateEngineViewSwitchedOn() {
+    engineView.setStateOn();
+    updateEngineViewRpmValue();
   }
+
+  private void updateEngineViewSwitchedOff() {
+    engineView.setStateOff();
+    updateEngineViewRpmValue();
+  }
+
+  private void updateEngineViewRpmValue() {
+    engineView.setRPM(engine.getRpm(), engine.isMinRpmReached());
+  }
+
+  private void handleEngineEvent(final PropertyChangeEvent event) {
+    final String propertyName = event.getPropertyName();
+    if ("engineState".equals(propertyName)) {
+      if (EngineState.ON.equals(event.getNewValue())) {
+        updateEngineViewSwitchedOn();
+      } else if (EngineState.OFF.equals(event.getNewValue())) {
+        updateEngineViewSwitchedOff();
+      }
+    } else if ("rpm".equals(propertyName)) {
+      updateEngineViewRpmValue();
+    } else {
+      LOG.error("Unknown PropertyChangeEvent happened: {}", event);
+    }
+  }
+
   private void handleEngineViewEvent(final PropertyChangeEvent eventView) {
-    if ("switchState".equals(eventView.getPropertyName())) {
+    final String propertyName = eventView.getPropertyName();
+    if ("switchState".equals(propertyName)) {
       if (EngineState.ON.equals(eventView.getNewValue())) {
         engine.switchOn();
-        return;
       } else if (EngineState.OFF.equals(eventView.getNewValue())) {
         engine.switchOff();
-        return;
       }
+    } else if ("increaseRpm".equals(propertyName)) {
+      engine.increaseRpm();
+    } else if ("decreaseRpm".equals(propertyName)) {
+      engine.decreaseRpm();
+    } else {
+      LOG.error("Unknown PropertyChangeEvent happened: {}", eventView);
     }
-    LOG.error("Unknown PropertyChangeEvent happened: {}", eventView);
   }
 }

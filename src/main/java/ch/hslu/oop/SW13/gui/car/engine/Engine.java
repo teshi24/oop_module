@@ -18,13 +18,15 @@ public class Engine implements Switchable {
   private final List<PropertyChangeListener> listeners = new ArrayList<>();
   private EngineState engineState = EngineState.OFF;
   private int rpm = 0;
+  private static final int MIN_RPM_VALUE = 0;
+  private static final int RPM_INCREMENT = 500;
 
   @Override
   public void switchOn() {
     if (isSwitchedOff()) {
       final EngineState oldEngineState = engineState;
       engineState = EngineState.ON;
-      rpm = 500;
+      rpm = RPM_INCREMENT;
       firePropertyChangeEvent(new PropertyChangeEvent(this, "engineState", oldEngineState, engineState));
     }
   }
@@ -34,7 +36,7 @@ public class Engine implements Switchable {
     if (isSwitchedOn()) {
       final EngineState oldEngineState = engineState;
       engineState = EngineState.OFF;
-      rpm = 0;
+      rpm = MIN_RPM_VALUE;
       firePropertyChangeEvent(new PropertyChangeEvent(this, "engineState", oldEngineState, engineState));
     }
   }
@@ -88,5 +90,32 @@ public class Engine implements Switchable {
   @VisibleForTesting
   List<PropertyChangeListener> getListeners() {
     return listeners;
+  }
+
+  public int getRpm() {
+    return rpm;
+  }
+
+  public boolean isMinRpmReached() {
+    return MIN_RPM_VALUE >= rpm;
+  }
+
+  public void increaseRpm() {
+    if (isSwitchedOff()) {
+      switchOn();
+    } else {
+      final int oldRpmValue = rpm;
+      rpm += RPM_INCREMENT;
+      firePropertyChangeEvent(new PropertyChangeEvent(this, "rpm", oldRpmValue, rpm));
+    }
+  }
+
+  public void decreaseRpm() {
+    final int oldRpmValue = rpm;
+    rpm -= RPM_INCREMENT;
+    firePropertyChangeEvent(new PropertyChangeEvent(this, "rpm", oldRpmValue, rpm));
+    if (isMinRpmReached()) {
+      switchOff();
+    }
   }
 }
