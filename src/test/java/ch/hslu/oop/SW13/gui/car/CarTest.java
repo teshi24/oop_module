@@ -26,7 +26,7 @@ class CarTest extends SwitchableTest<Car> {
 
   @Test
   void listensToEvents() {
-    testee.handleMotorEvent(new PropertyChangeEvent(this, "property", "old", "new"));
+    testee.handleEngineEvent(new PropertyChangeEvent(this, "property", "old", "new"));
   }
 
   @Test
@@ -38,7 +38,7 @@ class CarTest extends SwitchableTest<Car> {
                                                                                          EngineState.OFF,
                                                                                          EngineState.ON);
 
-    verify(testeeSpy, times(1)).handleMotorEvent(argThat(matchesPropertyChangeEvent(expectedEngineStateChangeEvent)));
+    verify(testeeSpy, times(1)).handleEngineEvent(argThat(matchesPropertyChangeEvent(expectedEngineStateChangeEvent)));
   }
 
   @Test
@@ -53,6 +53,6 @@ class CarTest extends SwitchableTest<Car> {
                                                                                          EngineState.ON,
                                                                                          EngineState.OFF);
 
-    verify(testeeSpy, times(1)).handleMotorEvent(argThat(matchesPropertyChangeEvent(expectedEngineStateChangeEvent)));
+    verify(testeeSpy, times(1)).handleEngineEvent(argThat(matchesPropertyChangeEvent(expectedEngineStateChangeEvent)));
   }
 }

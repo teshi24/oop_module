@@ -75,7 +75,7 @@
         <argLine>-Xms512m -Xmx1g -Xss10m</argLine>
 
         <!-- Hier ggf. andere Startklasse anpassen! -->
-        <jar.start.class>ch.hslu.oop.SW05.mainmethode.DemoApp</jar.start.class>
+        <jar.start.class>ch.hslu.oop.SW13.gui.car.engine.EngineApp</jar.start.class>
 
         <scm.group.name>oop</scm.group.name>
         <scm.developer.uid>zbgisler</scm.developer.uid>

@@ -1,6 +1,8 @@
 package ch.hslu.oop.SW13.gui.car.engine;
 
 import ch.hslu.oop.SW13.gui.car.Switchable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.assertj.core.util.VisibleForTesting;
 
 import java.beans.PropertyChangeEvent;
@@ -11,6 +13,7 @@ import java.util.List;
 import static ch.hslu.oop.SW13.gui.exceptionhandling.Warnings.varShouldNotBeNull;
 
 public class Engine implements Switchable {
+  private static final Logger LOG = LogManager.getLogger(Engine.class);
 
   private final List<PropertyChangeListener> listeners = new ArrayList<>();
   private EngineState engineState = EngineState.OFF;
@@ -47,6 +50,7 @@ public class Engine implements Switchable {
    * @param event PropertyChangeEvent.
    */
   private void firePropertyChangeEvent(final PropertyChangeEvent event) {
+    LOG.info("PropertyChangeEvent fired: {}", event);
     for (final PropertyChangeListener listener : listeners) {
       listener.propertyChange(event);
     }

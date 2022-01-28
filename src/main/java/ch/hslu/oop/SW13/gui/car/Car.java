@@ -29,7 +29,7 @@ public class Car implements Switchable {
     backRightWheel = new Wheel();
 
     engine = new Engine();
-    engine.addPropertyChangeListener(this::handleMotorEvent);
+    engine.addPropertyChangeListener(this::handleEngineEvent);
 
     frontLight = new Light();
     backLight = new Light();
@@ -65,7 +65,7 @@ public class Car implements Switchable {
     return !isSwitchedOn();
   }
 
-  public void handleMotorEvent(final PropertyChangeEvent event) {
+  public void handleEngineEvent(final PropertyChangeEvent event) {
     LOG.info(event);
   }
 }
