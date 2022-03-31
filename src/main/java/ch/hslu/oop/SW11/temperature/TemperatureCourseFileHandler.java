@@ -83,8 +83,8 @@ public class TemperatureCourseFileHandler {
   private static MeasuringPoint parseMeasuringPoint(final String line) {
     final String[] values = line.split(";");
     final Temperature temperature = Temperature.createFromCelsius(Double.parseDouble(values[2]));
-    final LocalDateTime timestamp = LocalDateTime.parse(values[1], DateTimeFormatter.ofPattern("\"yyyy/MM/dd " +
-                                                                                               "HH:mm:ss\""));
+    final LocalDateTime timestamp = LocalDateTime.parse(values[1], DateTimeFormatter.ofPattern("\"yyyy/MM/dd " + "HH" +
+                                                                                               ":mm:ss\""));
     return new MeasuringPoint(temperature, timestamp);
   }
 }

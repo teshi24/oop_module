@@ -54,8 +54,7 @@ class CalculatorTest {
     assertThrows(ArithmeticException.class, () -> calculator.addition(Integer.MAX_VALUE, 1));
     assertThrows(ArithmeticException.class, () -> calculator.addition(Integer.MAX_VALUE, Integer.MAX_VALUE));
   }
-  
-  
+
   @Test
   void addition_0PlusMinValue_returnsMinValue() {
     assertEquals(Integer.MIN_VALUE, calculator.addition(0, Integer.MIN_VALUE));

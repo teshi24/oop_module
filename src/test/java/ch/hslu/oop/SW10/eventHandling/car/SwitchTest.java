@@ -6,7 +6,7 @@ class SwitchTest extends SwitchableTest<Switch> {
 
   @Override
   @BeforeEach
- public void setupTestee() {
-    this.testee = new Switch();
+  public void setupTestee() {
+    testee = new Switch();
   }
 }

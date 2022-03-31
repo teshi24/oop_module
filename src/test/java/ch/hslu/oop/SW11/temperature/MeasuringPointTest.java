@@ -7,7 +7,6 @@ class MeasuringPointTest {
 
   @Test
   void testEqualsContract() {
-    EqualsVerifier.forClass(MeasuringPoint.class)
-                  .verify();
+    EqualsVerifier.forClass(MeasuringPoint.class).verify();
   }
 }

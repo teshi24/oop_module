@@ -76,7 +76,6 @@ class PointTest {
     assertEquals(-1, point.compareTo(new Point(point.getX() + 1, point.getY() + 1)));
   }
 
-
   @Test
   void compareTo_pointWithSmallerXValueAndBiggerYValue_returns1() {
     final Point point = new Point(1, 2);

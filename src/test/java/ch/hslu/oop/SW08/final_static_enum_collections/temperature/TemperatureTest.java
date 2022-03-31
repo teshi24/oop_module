@@ -71,7 +71,8 @@ class TemperatureTest {
     assertEquals(StateOfAggregation.LIQUID,
                  temperature.getCurrentStateOfAggregationForElement(ElementOfPeriodSystem.Hg));
     temperature.setCurrentTemperatureInCelsius(1000);
-    assertEquals(StateOfAggregation.GASEOUS, temperature.getCurrentStateOfAggregationForElement(ElementOfPeriodSystem.Hg));
+    assertEquals(StateOfAggregation.GASEOUS,
+                 temperature.getCurrentStateOfAggregationForElement(ElementOfPeriodSystem.Hg));
     temperature.setCurrentTemperatureInCelsius(-1000);
     assertEquals(StateOfAggregation.SOLID,
                  temperature.getCurrentStateOfAggregationForElement(ElementOfPeriodSystem.Hg));

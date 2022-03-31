@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PersonComparatorTest {
 
   private final PersonComparator personComparator = new PersonComparator();
-  
+
   private Person person;
 
   private final String lastName = "Stadelmann";
@@ -31,7 +31,7 @@ class PersonComparatorTest {
   private Person getPersonAsDuplicationOfDefault() {
     return new Person(person.getAhvNr(), person.getLastName(), person.getFirstName());
   }
-  
+
   @Test
   void compareTo_samePerson_return0() {
     assertEquals(0, personComparator.compare(person, person));

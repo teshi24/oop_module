@@ -32,7 +32,8 @@ class LineTest {
     assertEquals(0, line.getEndPoint().getY());
 
     /*
-    this must be false, since datahiding means to return copies of the element, so that other classes cannot directly change values
+    this must be false, since datahiding means to return copies of the element, so that other classes cannot directly
+     change values
     assertEquals(xStartPoint, line.getStartPoint().getX());
     assertEquals(yStartPoint, line.getStartPoint().getY());
     assertEquals(xEndPoint, line.getEndPoint().getX());
